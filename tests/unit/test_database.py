@@ -1,3 +1,14 @@
+# -*- coding: utf-8 -*-
+"""
+    tests.unit.test_database
+    ------------------------
+
+    Database Tests
+
+    :copyright: (c) 2020 by John te Bokkel
+    :license: BSD, see LICENSE for more details
+
+"""
 import pytest
 import datetime
 
