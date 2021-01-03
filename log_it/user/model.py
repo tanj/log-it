@@ -13,14 +13,14 @@
 from sqlalchemy_utils.models import generic_repr
 from sqlalchemy_utils.types import EmailType, URLType
 
-from flask_login import UserMixin
+from flask_login import UserMixin, RoleMixin
 
 from log_it.extensions import db
-from log_it.utils.database import Timestamp
+from log_it.utils.database import Timestamp, CRUDMixin
 
 
 @generic_repr
-class TUser(db.Model, UserMixin, Timestamp):
+class TUser(db.Model, CRUDMixin, UserMixin, Timestamp):
     __tablename__ = "tUser"
 
     ixUser = db.Column(db.Integer, primary_key=True)
@@ -28,3 +28,25 @@ class TUser(db.Model, UserMixin, Timestamp):
     sName = db.Column(db.Unicode(255))
     urlProfilePic = db.Column(URLType)
     urlDefaultLog = db.Column(URLType)
+    fs_uniquifier = db.Column(db.Text)
+
+    roles = db.relationship("TRole", secondary="tUserRole")
+
+
+@generic_repr
+class TRole(db.Model, CRUDMixin, RoleMixin):
+    __tablename__ = "tRole"
+
+    ixRole = db.Column(db.Integer, primary_key=True)
+    sRole = db.Column(db.Unicode(80), unique=True)
+    sDescription = db.Column(db.Text)
+
+    users = db.relationship("TUser", secondary="tUserRole")
+
+
+@generic_repr
+class TUserRole(db.Model, CRUDMixin):
+    __tablename__ = "tUserRole"
+
+    ixUser = db.Column(db.Integer, db.ForeignKey("tUser.ixUser"), primary_key=True)
+    ixRole = db.Column(db.Integer, db.ForeignKey("tRole.ixRole"), primary_key=True)
