@@ -1,4 +1,5 @@
 import pytest
+import datetime
 
 from sqlalchemy import func
 
@@ -73,3 +74,12 @@ class TestCRUDMixin(object):
     def test_pk_to_dict(self):
         r = TRole.query.get(1)
         assert {"ixRole": 1} == r.pk_to_dict
+
+
+@pytest.mark.usefixtures("populated_db")
+def test_timestamp_before_update(user):
+    """utcUpdated should always be set by an event to utcnow"""
+    forced_time = datetime.datetime(2012, 12, 12, 12, 12, 12)
+    user.utcUpdated = forced_time
+    user.save()
+    assert user.utcUpdated != forced_time
