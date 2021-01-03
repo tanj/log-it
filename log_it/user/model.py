@@ -13,7 +13,7 @@
 from sqlalchemy_utils.models import generic_repr
 from sqlalchemy_utils.types import EmailType, URLType
 
-from flask_login import UserMixin, RoleMixin
+from flask_security import UserMixin, RoleMixin
 
 from log_it.extensions import db
 from log_it.utils.database import Timestamp, CRUDMixin
