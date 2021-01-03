@@ -54,12 +54,17 @@ class TField(db.Model, CRUDMixin):
 class TLogField(db.Model, CRUDMixin):
     __tablename__ = "tLogField"
 
-    ixField = db.Column(db.Integer, db.ForeignKey("tField.ixField"), primary_key=True)
+    ixLogField = db.Column(db.Integer, primary_key=True)
+    ixField = db.Column(db.Integer, db.ForeignKey("tField.ixField"))
     field = db.relationship("TField", uselist=False)
-    ixLog = db.Column(db.Integer, db.ForeignKey("tLog.ixLog"), primary_key=True)
+    ixLog = db.Column(db.Integer, db.ForeignKey("tLog.ixLog"))
     log = db.relationship("TLog", uselist=False)
     sValue = db.Column(db.Unicode)
     iOrder = db.Column(db.Integer)
+
+    __table_args__ = (
+        db.UniqueConstraint("ixField", "ixLog", name="uq_tlogfield_ixfield_ixlog"),
+    )
 
 
 @generic_repr
