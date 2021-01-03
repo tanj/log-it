@@ -19,11 +19,9 @@ def set_fixture_defaults(fixture, default={}):
         if isinstance(new_parent, Mapping):
             _new_parent = {}
             _new_parent.update(default)
-            try:
-                _new_parent.update(new_parent)
-                new_parent = _new_parent
-            except Exception:
-                pass
+            _new_parent.update(new_parent)
+            new_parent = _new_parent
+
         return new_parent, new_items
 
     return remap(fixture, enter=set_defaults_enter)
