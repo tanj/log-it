@@ -11,7 +11,7 @@
 """
 from datetime import datetime
 
-import sqlachemy as sa
+import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declared_attr
 from log_it.extensions import db
 
