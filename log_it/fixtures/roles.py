@@ -9,6 +9,8 @@
     :license: BSD, see LICENSE for more details
 
 """
+default = {"sRole": None, "sDescription": None}
+lookup = "sRole"
 fixture = [
     {"sRole": "Admin", "sDescription": "Site Administrator"},
     {"sRole": "Domain Admin", "sDescription": "Domain Administrator"},
