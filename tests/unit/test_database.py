@@ -47,3 +47,29 @@ class TestDatabaseCreation(object):
     def test_populate_roles(self):
         (count,) = db.session.query(func.count(TRole.ixRole)).one()
         assert count == len(roles.fixture)
+
+
+@pytest.mark.usefixtures("populated_db")
+class TestCRUDMixin(object):
+    def test_create(self):
+        new_roll = TRole.create(sRole="creat_test_roll", commit=False)
+        assert new_roll.ixRole is None
+        assert new_roll in db.session.new
+        db.session.rollback()
+
+    def test_save(self):
+        new_roll = TRole.create(sRole="save_test_roll", commit=False)
+        assert new_roll.ixRole is None
+        assert new_roll in db.session.new
+        new_roll.save(commit=True)
+        assert new_roll.ixRole is not None
+
+    def test_delete(self):
+        new_roll = TRole.create(sRole="delete_test_roll", commit=True)
+        new_roll.delete()
+        r = TRole.query.get(new_roll.ixRole)
+        assert r is None
+
+    def test_pk_to_dict(self):
+        r = TRole.query.get(1)
+        assert {"ixRole": 1} == r.pk_to_dict
