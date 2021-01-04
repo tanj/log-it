@@ -1,0 +1,20 @@
+{% extends "bootstrap/base.html" %}
+{#{% import 'lib.html' as lib with context %}#}
+
+{# {% block styles %} #}
+{#   {{ lib.bootstrap_css() }} #}
+{# {% endblock %} #}
+
+{% block title %}Log it!{% if title %} - {{ title }}{% else %} - Home{% endif %}{% endblock %}
+
+{# {% block body %} #}
+
+  {% block navbar %}
+    {{ nav.top.render() }}
+  {% endblock %}
+
+  {# {% block scripts %} #}
+  {#   {{ lib.bootstrap_js() }} #}
+  {# {% endblock %} #}
+
+{# {% endblock %} #}

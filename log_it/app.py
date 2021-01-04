@@ -26,8 +26,11 @@ from flask import Flask
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
+from flask_security import Security, SQLAlchemyUserDatastore
+
 from log_it.utils.helpers import get_log_it_config
-from log_it.extensions import db
+from log_it.extensions import db, debugtoolbar, bootstrap
+from log_it.user.model import TUser, TRole
 
 logger = logging.getLogger(__name__)
 
@@ -174,10 +177,9 @@ def configure_mail_logs(app, formatter):  # pragma: no cover
 
 def configure_extensions(app):
     """Configures the extensions."""
-    # # Flask-Allows
-    # allows.init_app(app)
-    # allows.identity_loader(lambda: current_user)
-
+    # Flask-Security-Too
+    user_datastore = SQLAlchemyUserDatastore(db, TUser, TRole)
+    security = Security(app, user_datastore)  # noqa F841
     # # Flask-WTF CSRF
     # csrf.init_app(app)
 
@@ -188,10 +190,13 @@ def configure_extensions(app):
     # admin.init_app(app)
 
     # # Flask-Bootstrap
-    # bootstrap.init_app(app)
+    bootstrap.init_app(app)
 
     # # Flask-Nav
     # nav.init_app(app)
 
     # # Flask-Classy
     # views.load(app)
+
+    # Flask-DebugToolbar
+    debugtoolbar.init_app(app)
