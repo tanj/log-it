@@ -20,8 +20,8 @@ from sqlalchemy_utils.functions import (
 )
 
 from log_it.extensions import db
-from log_it.user.model import TUser, TRole, TUserRole
-from log_it.log.model import (
+from log_it.user.model import TUser, TRole, TUserRole  # noqa
+from log_it.log.model import (  # noqa
     TLog,
     TField,
     TLogField,
@@ -30,7 +30,7 @@ from log_it.log.model import (
     TTag,
     TTagMessage,
 )
-from log_it.utils.populate import (
+from log_it.utils.populate import (  # noqa
     populate_table_from_fixture,
     populate_link_table_from_fixture,
 )
@@ -38,8 +38,10 @@ from log_it.fixtures import roles
 
 
 @pytest.fixture(scope="session")
-def testdb_engine(session_application):
+def testdb_engine(session_application, keepdb):
     """create and destroy database each time the test suite runs"""
+    if database_exists(session_application.config["TEST_SQLALCHEMY_DATABASE_URI"]):
+        drop_database(session_application.config["TEST_SQLALCHEMY_DATABASE_URI"])
     assert not database_exists(
         session_application.config["TEST_SQLALCHEMY_DATABASE_URI"]
     )
@@ -50,10 +52,11 @@ def testdb_engine(session_application):
     db.metadata.create_all(bind=eng, tables=db.metadata.sorted_tables)
     yield eng
 
-    drop_database(session_application.config["TEST_SQLALCHEMY_DATABASE_URI"])
-    assert not database_exists(
-        session_application.config["TEST_SQLALCHEMY_DATABASE_URI"]
-    )
+    if not keepdb:
+        drop_database(session_application.config["TEST_SQLALCHEMY_DATABASE_URI"])
+        assert not database_exists(
+            session_application.config["TEST_SQLALCHEMY_DATABASE_URI"]
+        )
 
 
 @pytest.fixture(scope="session")
