@@ -49,7 +49,7 @@ def create_app(config=None, instance_path=None):
     app = Flask("log_it", instance_path=instance_path, instance_relative_config=True)
 
     # instance folders are not automatically created by flask
-    if not os.path.exists(app.instance_path):
+    if not os.path.exists(app.instance_path):  # pragma: no cover
         os.makedirs(app.instance_path)
 
     configure_app(app, config)
@@ -64,7 +64,7 @@ def configure_app(app, config):
     app.config.from_object("log_it.configs.default.DefaultConfig")
     config = get_log_it_config(app, config)
     # Path
-    if isinstance(config, str):
+    if isinstance(config, str):  # pragma: no cover
         app.config.from_pyfile(config)
     # Module
     else:
@@ -86,7 +86,7 @@ def configure_app(app, config):
 
     if not isinstance(config, str) and config is not None:
         config_name = "{}.{}".format(config.__module__, config.__name__)
-    else:
+    else:  # pragma: no cover
         config_name = config
 
     logger.info("Using config from: {}".format(config_name))
@@ -126,12 +126,12 @@ def configure_logging(app):
     if app.config.get("USE_DEFAULT_LOGGING"):
         configure_default_logging(app)
 
-    if app.config.get("LOG_CONF_FILE"):
+    if app.config.get("LOG_CONF_FILE"):  # pragma: no cover
         logging.config.fileConfig(
             app.config["LOG_CONF_FILE"], disable_existing_loggers=False
         )
 
-    if app.config["SQLALCHEMY_ECHO"]:
+    if app.config["SQLALCHEMY_ECHO"]:  # pragma: no cover
         # Ref: http://stackoverflow.com/a/8428546
         @event.listens_for(Engine, "before_cursor_execute")
         def before_cursor_execute(
@@ -151,11 +151,11 @@ def configure_default_logging(app):
     # Load default logging config
     logging.config.dictConfig(app.config["LOG_DEFAULT_CONF"])
 
-    if app.config["SEND_LOGS"]:
+    if app.config["SEND_LOGS"]:  # pragma: no cover
         configure_mail_logs(app)
 
 
-def configure_mail_logs(app, formatter):
+def configure_mail_logs(app, formatter):  # pragma: no cover
     from logging.handlers import SMTPHandler
 
     formatter = logging.Formatter("%(asctime)s %(levelname)-7s %(name)-25s %(message)s")

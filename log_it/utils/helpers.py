@@ -46,7 +46,7 @@ def get_log_it_config(app, config_file):
             return import_string(config_file)
         except ImportStringError:
             return None
-    else:
+    else:  # pragma: no cover
         # this would be so much nicer and cleaner if we wouldn't
         # support the root/project dir.
         # this walks back to flaskbb/ from flaskbb/flaskbb/cli/main.py
