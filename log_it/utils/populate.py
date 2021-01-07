@@ -37,7 +37,8 @@ def populate_table_from_fixture(table, fixture):
 
     """
     _fixtures = []
-    for elm in fixture.fixture:
+    fx_defaults = set_fixture_defaults(fixture.fixture, fixture.default)
+    for elm in fx_defaults:
         _fixtures.append(table.create(**elm, commit=False))
     if len(_fixtures) > 0:
         _fixtures[0].save()

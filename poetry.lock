@@ -251,6 +251,17 @@ Flask = ">=0.8"
 visitor = "*"
 
 [[package]]
+name = "flask-classful"
+version = "0.14.2"
+description = "Class based views for Flask"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Flask = ">=0.11,<0.12.3 || >0.12.3"
+
+[[package]]
 name = "flask-debugtoolbar"
 version = "0.11.0"
 description = "A toolbar overlay for debugging Flask applications."
@@ -286,6 +297,26 @@ python-versions = "*"
 [package.dependencies]
 blinker = "*"
 Flask = "*"
+
+[[package]]
+name = "flask-nav"
+version = "0.6.dev1"
+description = ""
+category = "main"
+optional = false
+python-versions = "*"
+develop = false
+
+[package.dependencies]
+dominate = "*"
+flask = "*"
+visitor = "*"
+
+[package.source]
+type = "git"
+url = "https://github.com/tanj/flask-nav.git"
+reference = "gh-27_fix-abc-import"
+resolved_reference = "b61de7a6742f7d15f92b477b1518f420303b1efb"
 
 [[package]]
 name = "flask-principal"
@@ -733,7 +764,7 @@ postgres = ["psycopg2"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "993ad9112f1cce2a5574a006a01c337d4dd5b77e75d460071a3da42c996b68be"
+content-hash = "2d87c256deffe21fe7920fb0af701a46377286953f047d31d87d8b4dd3e12f58"
 
 [metadata.files]
 appdirs = [
@@ -919,6 +950,10 @@ flask-babelex = [
 flask-bootstrap = [
     {file = "Flask-Bootstrap-3.3.7.1.tar.gz", hash = "sha256:cb08ed940183f6343a64e465e83b3a3f13c53e1baabb8d72b5da4545ef123ac8"},
 ]
+flask-classful = [
+    {file = "Flask-Classful-0.14.2.tar.gz", hash = "sha256:ae0cabd3f69e1e16db3bf31f50862d3a5577244bfa0ace2b4612d10436e4bff7"},
+    {file = "Flask_Classful-0.14.2-py2.py3-none-any.whl", hash = "sha256:3a8f3c8fc549e37acf082f7b0ebf9e53dc35b0c9241c14f7d64433d4c1d629c9"},
+]
 flask-debugtoolbar = [
     {file = "Flask-DebugToolbar-0.11.0.tar.gz", hash = "sha256:3c4e79d354ede014e6657c545a536d4fb273cc89e3fd6b4835b02e346dd3aab4"},
     {file = "Flask_DebugToolbar-0.11.0-py2.py3-none-any.whl", hash = "sha256:0e9a80d4c599233c68376e81cc99976200b5ac5248cfb24f18935cc5b69ac5b3"},
@@ -930,6 +965,7 @@ flask-login = [
 flask-mail = [
     {file = "Flask-Mail-0.9.1.tar.gz", hash = "sha256:22e5eb9a940bf407bcf30410ecc3708f3c56cc44b29c34e1726fe85006935f41"},
 ]
+flask-nav = []
 flask-principal = [
     {file = "Flask-Principal-0.4.0.tar.gz", hash = "sha256:f5d6134b5caebfdbb86f32d56d18ee44b080876a27269560a96ea35f75c99453"},
 ]

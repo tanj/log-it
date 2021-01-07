@@ -29,8 +29,10 @@ from sqlalchemy.engine import Engine
 from flask_security import Security, SQLAlchemyUserDatastore
 
 from log_it.utils.helpers import get_log_it_config
-from log_it.extensions import db, debugtoolbar, bootstrap
+from log_it.extensions import db, debugtoolbar, bootstrap, classful, nav
 from log_it.user.model import TUser, TRole
+
+from log_it.display import navigation  # noqa
 
 logger = logging.getLogger(__name__)
 
@@ -192,11 +194,11 @@ def configure_extensions(app):
     # # Flask-Bootstrap
     bootstrap.init_app(app)
 
-    # # Flask-Nav
-    # nav.init_app(app)
+    # Flask-Nav
+    nav.init_app(app)
 
-    # # Flask-Classy
-    # views.load(app)
+    # Flask-Classful
+    classful.init_app(app)
 
     # Flask-DebugToolbar
     debugtoolbar.init_app(app)

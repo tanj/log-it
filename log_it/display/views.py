@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-    log_it.auth.views
-    -----------------
+    log_it.display.views
+    --------------------
 
-    Auth Views
+    Home and other misc Views
 
     :copyright: (c) 2020 by John te Bokkel
     :license: BSD, see LICENSE for more details
@@ -12,12 +12,9 @@
 from flask import render_template
 from flask_classful import FlaskView
 
-_auth_prefix = "/auth/"
 
-
-class LoginView(FlaskView):
-    route_prefix = _auth_prefix
-    title = "Login"
+class HomeView(FlaskView):
+    title = "Home"
 
     def index(self):
-        return render_template("auth/login.html")
+        return render_template("layout.html")
