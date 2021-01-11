@@ -134,45 +134,6 @@ class TTagMessage(db.Model, CRUDMixin):
     ixTag = db.Column(db.Integer, db.ForeignKey("tTag.ixTag"), primary_key=True)
 
 
-@generic_repr
-class TUserPermission(db.Model, CRUDMixin):
-    __tablename__ = "tUserPermission"
-
-    ixUserPermission = db.Column(db.Integer, primary_key=True)
-    ixLog = db.Column(db.Integer, db.ForeignKey("tLog.ixLog"), nullable=False)
-    log = db.relationship("TLog", uselist=False)
-
-    ixUser = db.Column(db.Integer, db.ForeignKey("tUser.ixUser"), nullable=False)
-    user = db.relationship("TUser", uselist=False)
-
-    ixAction = db.Column(db.Integer, db.ForeignKey("tAction.ixAction"), nullable=False)
-    action = db.relationship("TAction", uselist=False)
-
-
-@generic_repr
-class TRolePermission(db.Model, CRUDMixin):
-    __tablename__ = "tRolePermission"
-
-    ixRolePermission = db.Column(db.Integer, primary_key=True)
-    ixLog = db.Column(db.Integer, db.ForeignKey("tLog.ixLog"), nullable=False)
-    log = db.relationship("TLog", uselist=False)
-
-    ixRole = db.Column(db.Integer, db.ForeignKey("tRole.ixRole"), nullable=False)
-    user = db.relationship("TRole", uselist=False)
-
-    ixAction = db.Column(db.Integer, db.ForeignKey("tAction.ixAction"), nullable=False)
-    action = db.relationship("TAction", uselist=False)
-
-
-@generic_repr
-class TAction(db.Model, CRUDMixin):
-    __tablename__ = "tAction"
-
-    ixAction = db.Column(db.Integer, primary_key=True)
-    sAction = db.Column(db.Unicode(100), nullable=False)
-    sDescription = db.Column(db.Text)
-
-
 _indexes = [
     db.Index("uq_ttag_stag_lower", db.func.lower(TTag.sTag), unique=True),
 ]
