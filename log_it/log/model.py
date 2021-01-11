@@ -24,7 +24,15 @@ class TLog(db.Model, CRUDMixin, Timestamp):
     ixLog = db.Column(db.Integer, primary_key=True)
     sLog = db.Column(db.Unicode)
     ixUser = db.Column(db.Integer, db.ForeignKey("tUser.ixUser"), nullable=False)
+    user = db.relationship("TUser", uselist=False)
+
     fields = db.relationship("TLogField", uselist=True)
+
+    user_permissions = db.relationship(
+        "TUserPermission",
+        primaryjoin="and_(TLog.ixLog == TUserPermission.ixLog, TLog.ixUser == TUserPermission.ixUser)",
+    )
+    role_permissions = db.relationship("TRolePermission")
 
 
 # TODO: log sharing
@@ -80,13 +88,24 @@ class TMessage(db.Model, CRUDMixin, Timestamp):
         db.Integer, db.ForeignKey("tMessageType.ixMessageType"), nullable=False
     )
     message_type = db.relationship("TMessageType", uselist=False)
-    # utcMessage is added for being able to change some history if a note was missed
-    utcMessage = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     ixUser = db.Column(
         db.Integer, db.ForeignKey("tUser.ixUser", ondelete="CASCADE"), nullable=False
     )
     user = db.relationship("TUser", uselist=False)
+
+    # utcMessage is added for being able to change some history if a note was missed
+    utcMessage = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    sMessage = db.Column(db.Text)
+
+    # TODO: need to test this relationship
+    user_permissions = db.relationship(
+        "TUserPermission",
+        primaryjoin=(
+            "and_(foreign(TMessage.ixLog) == TUserPermission.ixLog, "
+            "TMessage.ixUser == TUserPermission.ixUser)"
+        ),
+    )
 
 
 @generic_repr
@@ -113,6 +132,45 @@ class TTagMessage(db.Model, CRUDMixin):
         db.Integer, db.ForeignKey("tMessage.ixMessage"), primary_key=True
     )
     ixTag = db.Column(db.Integer, db.ForeignKey("tTag.ixTag"), primary_key=True)
+
+
+@generic_repr
+class TUserPermission(db.Model, CRUDMixin):
+    __tablename__ = "tUserPermission"
+
+    ixUserPermission = db.Column(db.Integer, primary_key=True)
+    ixLog = db.Column(db.Integer, db.ForeignKey("tLog.ixLog"), nullable=False)
+    log = db.relationship("TLog", uselist=False)
+
+    ixUser = db.Column(db.Integer, db.ForeignKey("tUser.ixUser"), nullable=False)
+    user = db.relationship("TUser", uselist=False)
+
+    ixAction = db.Column(db.Integer, db.ForeignKey("tAction.ixAction"), nullable=False)
+    action = db.relationship("TAction", uselist=False)
+
+
+@generic_repr
+class TRolePermission(db.Model, CRUDMixin):
+    __tablename__ = "tRolePermission"
+
+    ixRolePermission = db.Column(db.Integer, primary_key=True)
+    ixLog = db.Column(db.Integer, db.ForeignKey("tLog.ixLog"), nullable=False)
+    log = db.relationship("TLog", uselist=False)
+
+    ixRole = db.Column(db.Integer, db.ForeignKey("tRole.ixRole"), nullable=False)
+    user = db.relationship("TRole", uselist=False)
+
+    ixAction = db.Column(db.Integer, db.ForeignKey("tAction.ixAction"), nullable=False)
+    action = db.relationship("TAction", uselist=False)
+
+
+@generic_repr
+class TAction(db.Model, CRUDMixin):
+    __tablename__ = "tAction"
+
+    ixAction = db.Column(db.Integer, primary_key=True)
+    sAction = db.Column(db.Unicode(100), nullable=False)
+    sDescription = db.Column(db.Text)
 
 
 _indexes = [
