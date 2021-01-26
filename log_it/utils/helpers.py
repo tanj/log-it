@@ -61,3 +61,30 @@ def get_log_it_config(app, config_file):
         # config in root directory doesn't exist
         if os.path.exists(project_config):
             return project_config
+
+
+class CompoundFilter(object):
+    """Takes a string like `customer.ixCustomer` or `sJobNumber` and
+    provides properties to make dictionary comprehesions easy"""
+
+    def __init__(self, string):
+        self.string = string
+        self.primary = None
+        self.second = None
+        if "." in string:
+            self.primary, self.second = string.split(".", 1)
+        else:
+            self.primary = string
+
+    @property
+    def key(self):
+        return self.second or self.primary
+
+    def get(self, data):
+        try:
+            ret = getattr(data, self.primary)
+        except AttributeError:
+            ret = data.get(self.primary)
+        if self.second is not None and ret is not None:
+            ret = CompoundFilter(self.second).get(ret)
+        return ret
