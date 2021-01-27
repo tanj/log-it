@@ -31,6 +31,13 @@ class TUser(db.Model, CRUDMixin, UserMixin, Timestamp):
     fs_uniquifier = db.Column(db.Text)
 
     roles = db.relationship("TRole", secondary="tUserRole")
+    user_permissions = db.relationship("TUserPermission")
+    role_permissions = db.relationship(
+        "TRolePermission",
+        secondary="tUserRole",
+        primaryjoin=("TUser.ixUser == TUserRole.ixUser"),
+        secondaryjoin=("TUserRole.ixRole == TRolePermission.ixRole"),
+    )
 
 
 @generic_repr
@@ -49,37 +56,10 @@ class TUserRole(db.Model, CRUDMixin):
     __tablename__ = "tUserRole"
 
     ixUser = db.Column(db.Integer, db.ForeignKey("tUser.ixUser"), primary_key=True)
+    user = db.relationship("TUser")
+
     ixRole = db.Column(db.Integer, db.ForeignKey("tRole.ixRole"), primary_key=True)
-
-
-@generic_repr
-class TUserPermission(db.Model, CRUDMixin):
-    __tablename__ = "tUserPermission"
-
-    ixUserPermission = db.Column(db.Integer, primary_key=True)
-    ixLog = db.Column(db.Integer, db.ForeignKey("tLog.ixLog"), nullable=False)
-    log = db.relationship("TLog", uselist=False)
-
-    ixUser = db.Column(db.Integer, db.ForeignKey("tUser.ixUser"), nullable=False)
-    user = db.relationship("TUser", uselist=False)
-
-    ixAction = db.Column(db.Integer, db.ForeignKey("tAction.ixAction"), nullable=False)
-    action = db.relationship("TAction", uselist=False)
-
-
-@generic_repr
-class TRolePermission(db.Model, CRUDMixin):
-    __tablename__ = "tRolePermission"
-
-    ixRolePermission = db.Column(db.Integer, primary_key=True)
-    ixLog = db.Column(db.Integer, db.ForeignKey("tLog.ixLog"), nullable=False)
-    log = db.relationship("TLog", uselist=False)
-
-    ixRole = db.Column(db.Integer, db.ForeignKey("tRole.ixRole"), nullable=False)
-    user = db.relationship("TRole", uselist=False)
-
-    ixAction = db.Column(db.Integer, db.ForeignKey("tAction.ixAction"), nullable=False)
-    action = db.relationship("TAction", uselist=False)
+    role = db.relationship("TRole")
 
 
 @generic_repr

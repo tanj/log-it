@@ -80,3 +80,16 @@ def populate_link_table_from_fixture(link_table, table_one, table_two, fixture):
         links.append(link_table.create(**one.pk_to_dict, **two.pk_to_dict))
 
     return links
+
+
+def populate_from_marshmallow_fixture(session, mm_schema, fixture):
+    """Populate database from a marshmallow export
+
+    :param session: sqlalchemy session
+    :param mm_schema: Marshmallow Schema
+    :param fixture: data exported by Marshmallow Schema
+    :returns: mm_schema.opts.model
+
+    """
+    _mm_schema = mm_schema(session=session)
+    return _mm_schema.load(fixture)

@@ -106,6 +106,7 @@ class TMessage(db.Model, CRUDMixin, Timestamp):
             "TMessage.ixUser == TUserPermission.ixUser)"
         ),
     )
+    tags = db.relationship("TTag", secondary="tTagMessage")
 
 
 @generic_repr
@@ -132,6 +133,37 @@ class TTagMessage(db.Model, CRUDMixin):
         db.Integer, db.ForeignKey("tMessage.ixMessage"), primary_key=True
     )
     ixTag = db.Column(db.Integer, db.ForeignKey("tTag.ixTag"), primary_key=True)
+    tag = db.relationship("TTag", uselist=False)
+
+
+@generic_repr
+class TUserPermission(db.Model, CRUDMixin):
+    __tablename__ = "tUserPermission"
+
+    ixUserPermission = db.Column(db.Integer, primary_key=True)
+    ixLog = db.Column(db.Integer, db.ForeignKey("tLog.ixLog"), nullable=False)
+    log = db.relationship("TLog", uselist=False)
+
+    ixUser = db.Column(db.Integer, db.ForeignKey("tUser.ixUser"), nullable=False)
+    user = db.relationship("TUser", uselist=False)
+
+    ixAction = db.Column(db.Integer, db.ForeignKey("tAction.ixAction"), nullable=False)
+    action = db.relationship("TAction", uselist=False)
+
+
+@generic_repr
+class TRolePermission(db.Model, CRUDMixin):
+    __tablename__ = "tRolePermission"
+
+    ixRolePermission = db.Column(db.Integer, primary_key=True)
+    ixLog = db.Column(db.Integer, db.ForeignKey("tLog.ixLog"), nullable=False)
+    log = db.relationship("TLog", uselist=False)
+
+    ixRole = db.Column(db.Integer, db.ForeignKey("tRole.ixRole"), nullable=False)
+    user = db.relationship("TRole", uselist=False)
+
+    ixAction = db.Column(db.Integer, db.ForeignKey("tAction.ixAction"), nullable=False)
+    action = db.relationship("TAction", uselist=False)
 
 
 _indexes = [
