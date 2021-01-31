@@ -22,9 +22,14 @@ roles = [
     # {"sRole": "Domain Admin", "sDescription": "Domain Administrator"},
     # {"sRole": "Domain User", "sDescription": "Domain User"},
     {"sRole": "User", "sDescription": "Normal User"},
+    {"sRole": "Read Only", "sDescription": "Read Only"},
+    {"sRole": "Logger", "sDescription": "Can Read and Insert messages"},
 ]
 
 role_permissions = [
     {"sRole": "Admin", "sAction": "ALL"},
     {"sRole": "User", "sAction": "SELF"},
+    {"sRole": "Read Only", "sAction": "READ"},
+    {"sRole": "Logger", "sAction": "READ"},
+    {"sRole": "Logger", "sAction": "INSERT"},
 ]

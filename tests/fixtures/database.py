@@ -36,7 +36,7 @@ from log_it.utils.populate import (  # noqa
     populate_from_marshmallow_fixture,
 )
 from log_it.fixtures import permissions
-from log_it.extensions.marshmallow.user import ActionFixture, RoleFixture
+from log_it.extensions.marshmallow.user import ActionFixture, RoleFixture, UserWithRoles
 
 
 @pytest.fixture(scope="session")
@@ -69,6 +69,12 @@ def populated_db(testdb_engine, session_application):
         )
         populate_from_marshmallow_fixture(
             db.session, RoleFixture, permissions.roles, many=True
+        )
+        populate_from_marshmallow_fixture(
+            db.session,
+            UserWithRoles,
+            session_application.config["TESTING_USERS"],
+            many=True,
         )
         db.session.commit()
 

@@ -22,30 +22,34 @@ class TestingConfig(DefaultConfig):
     DEBUG = False
     TESTING = True
 
+    # Using log_it.extensions.marshmallow.user UserWithRoles
     TESTING_USERS = [
         {
-            "user": {"sEmail": "admin@example.com"},
+            "sEmail": "admin@example.com",
+            "sName": "Administrator",
             "roles": [
-                {"sRole": "ALL"},
+                {"sRole": "Admin"},
             ],
         },
         {
-            "user": {"sEmail": "user@example.com"},
+            "sEmail": "user@example.com",
+            "sName": "User",
             "roles": [
-                {"sRole": "SELF"},
+                {"sRole": "User"},
             ],
         },
         {
-            "user": {"sEmail": "user_ro@example.com"},
+            "sEmail": "user_ro@example.com",
+            "sName": "Read Only User",
             "roles": [
-                {"sRole": "READ"},
+                {"sRole": "Read Only"},
             ],
         },
         {
-            "user": {"sEmail": "user_lo@example.com"},
+            "sEmail": "user_lo@example.com",
+            "sName": "Log Only User",
             "roles": [
-                {"sRole": "READ"},
-                {"sRole": "INSERT"},
+                {"sRole": "Logger"},
             ],
         },
     ]
