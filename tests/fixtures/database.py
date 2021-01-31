@@ -33,8 +33,10 @@ from log_it.log.model import (  # noqa
 from log_it.utils.populate import (  # noqa
     populate_table_from_fixture,
     populate_link_table_from_fixture,
+    populate_from_marshmallow_fixture,
 )
-from log_it.fixtures import roles
+from log_it.fixtures import permissions
+from log_it.extensions.marshmallow.user import ActionFixture, RoleFixture
 
 
 @pytest.fixture(scope="session")
@@ -59,7 +61,15 @@ def testdb_engine(session_application, keepdb):
         )
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session", autouse=True)
 def populated_db(testdb_engine, session_application):
-    populate_table_from_fixture(TRole, roles)
+    if TRole.query.get(1) is None:
+        populate_from_marshmallow_fixture(
+            db.session, ActionFixture, permissions.actions, many=True
+        )
+        populate_from_marshmallow_fixture(
+            db.session, RoleFixture, permissions.roles, many=True
+        )
+        db.session.commit()
+
     return

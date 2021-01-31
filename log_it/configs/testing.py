@@ -22,13 +22,41 @@ class TestingConfig(DefaultConfig):
     DEBUG = False
     TESTING = True
 
+    TESTING_USERS = [
+        {
+            "user": {"sEmail": "admin@example.com"},
+            "roles": [
+                {"sRole": "ALL"},
+            ],
+        },
+        {
+            "user": {"sEmail": "user@example.com"},
+            "roles": [
+                {"sRole": "SELF"},
+            ],
+        },
+        {
+            "user": {"sEmail": "user_ro@example.com"},
+            "roles": [
+                {"sRole": "READ"},
+            ],
+        },
+        {
+            "user": {"sEmail": "user_lo@example.com"},
+            "roles": [
+                {"sRole": "READ"},
+                {"sRole": "INSERT"},
+            ],
+        },
+    ]
+
     SQLALCHEMY_DATABASE_URI = "sqlite://"
     TEST_SQLALCHEMY_DATABASE_URI = "sqlite://"
 
     SERVER_NAME = "localhost:5000"
 
     # This will print all SQL statements
-    SQLALCHEMY_ECHO = False
+    SQLALCHEMY_ECHO = True
 
     # # Use the in-memory storage
     # WHOOSHEE_MEMORY_STORAGE = True

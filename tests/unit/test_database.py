@@ -17,7 +17,7 @@ from sqlalchemy import func
 from log_it.extensions import db
 from log_it.user.model import TRole
 from log_it.log.model import TLogField, TTag
-from log_it.fixtures import roles
+from log_it.fixtures import permissions
 
 
 def get_scalar_result(engine, sql):
@@ -33,7 +33,7 @@ def testdb(request, testdb_engine):
     request.cls.testdb = testdb_engine
 
 
-@pytest.mark.usefixtures("testdb", "populated_db")
+@pytest.mark.usefixtures("testdb")
 class TestDatabaseCreation(object):
     def index_exists(self, table_name, index_name):
         if self.testdb.dialect.name == "postgresql":
@@ -57,10 +57,9 @@ class TestDatabaseCreation(object):
 
     def test_populate_roles(self):
         (count,) = db.session.query(func.count(TRole.ixRole)).one()
-        assert count == len(roles.fixture)
+        assert count == len(permissions.roles)
 
 
-@pytest.mark.usefixtures("populated_db")
 class TestCRUDMixin(object):
     def test_create(self):
         new_roll = TRole.create(sRole="creat_test_roll", commit=False)
@@ -86,7 +85,6 @@ class TestCRUDMixin(object):
         assert {"ixRole": 1} == r.pk_to_dict
 
 
-@pytest.mark.usefixtures("populated_db")
 def test_timestamp_before_update(user):
     """utcUpdated should always be set by an event to utcnow"""
     forced_time = datetime.datetime(2012, 12, 12, 12, 12, 12)

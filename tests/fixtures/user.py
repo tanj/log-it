@@ -14,7 +14,7 @@ from sqlalchemy.orm.exc import NoResultFound
 import attr
 
 from log_it.user.model import TUser
-from log_it.fixtures import roles
+from log_it.fixtures import permissions
 
 
 @pytest.fixture
@@ -39,7 +39,7 @@ def user(fx_user):
 
 @pytest.fixture
 def fx_default_roles():
-    return roles.fixture
+    return permissions.roles
 
 
 @attr.s

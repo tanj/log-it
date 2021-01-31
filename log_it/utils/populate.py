@@ -82,7 +82,7 @@ def populate_link_table_from_fixture(link_table, table_one, table_two, fixture):
     return links
 
 
-def populate_from_marshmallow_fixture(session, mm_schema, fixture):
+def populate_from_marshmallow_fixture(session, mm_schema, fixture, many=False):
     """Populate database from a marshmallow export
 
     :param session: sqlalchemy session
@@ -91,5 +91,5 @@ def populate_from_marshmallow_fixture(session, mm_schema, fixture):
     :returns: mm_schema.opts.model
 
     """
-    _mm_schema = mm_schema(session=session)
+    _mm_schema = mm_schema(session=session, many=many)
     return _mm_schema.load(fixture)

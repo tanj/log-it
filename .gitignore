@@ -201,6 +201,6 @@ cython_debug/
 
 # flask related
 instance/
-log/
+logs/
 # include the log module
 !log_it/log/
