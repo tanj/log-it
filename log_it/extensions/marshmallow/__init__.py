@@ -9,6 +9,7 @@
     :license: BSD, see LICENSE for more details
 
 """
+from typing import Optional, Sequence
 import marshmallow as ma
 from marshmallow_sqlalchemy import SQLAlchemySchema
 from sqlalchemy.orm.exc import NoResultFound
@@ -21,7 +22,8 @@ class FixtureSchema(SQLAlchemySchema):
 
     class Meta:  # pylint: disable=R0903, C0115
         load_instance = True
-        filter_attrs = None  # set to list of string attributes to use as filter
+        # set to list of string attributes to use as filter
+        filter_attrs: Optional[Sequence[str]] = None  # pylint: disable=not-an-iterable
 
     def get_instance(self, data):
         """override get_instance to query with additional fields rather than just pk.

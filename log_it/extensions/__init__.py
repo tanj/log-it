@@ -15,8 +15,9 @@ from sqlalchemy import MetaData
 from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_bootstrap import Bootstrap
-from . import classful  # noqa
 from flask_nav import Nav
+
+from . import classful  # noqa
 
 metadata = MetaData(
     naming_convention={

@@ -94,7 +94,7 @@ def configure_app(app, config):
     else:  # pragma: no cover
         config_name = config
 
-    logger.info("Using config from: {}".format(config_name))
+    logger.info("Using config from: %s", config_name)
 
     # deprecation_level = app.config.get("DEPRECATION_LEVEL", "default")
 
@@ -137,30 +137,36 @@ def configure_logging(app):
         )
 
     if app.config["SQLALCHEMY_ECHO"]:  # pragma: no cover
+        # pylint: disable=unused-variable
         # Ref: http://stackoverflow.com/a/8428546
         @event.listens_for(Engine, "before_cursor_execute")
         def before_cursor_execute(
             conn, cursor, statement, parameters, context, executemany
         ):
+            # pylint: disable=unused-argument, too-many-arguments
             conn.info.setdefault("query_start_time", []).append(time.time())
 
         @event.listens_for(Engine, "after_cursor_execute")
         def after_cursor_execute(
             conn, cursor, statement, parameters, context, executemany
         ):
+            # pylint: disable=unused-argument, too-many-arguments
             total = time.time() - conn.info["query_start_time"].pop(-1)
             app.logger.debug("Total Time: %f", total)
 
 
 def configure_default_logging(app):
+    """configure default logging"""
     # Load default logging config
     logging.config.dictConfig(app.config["LOG_DEFAULT_CONF"])
 
-    if app.config["SEND_LOGS"]:  # pragma: no cover
+    if app.config["SEND_LOGS"]:
         configure_mail_logs(app)
 
 
-def configure_mail_logs(app, formatter):  # pragma: no cover
+def configure_mail_logs(app):
+    """configure mail logs"""
+    # pylint: disable=import-outside-toplevel
     from logging.handlers import SMTPHandler
 
     formatter = logging.Formatter("%(asctime)s %(levelname)-7s %(name)-25s %(message)s")

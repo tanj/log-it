@@ -14,5 +14,6 @@ from log_it.display.views import HomeView
 
 
 def init_app(app):
+    """Register Classful Views"""
     HomeView.register(app, route_base="/")
     LoginView.register(app)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=R0903
+# pylint: disable=R0903, C0115
 """
     log_it.extensions.marshmallow.user
     ----------------------------------
