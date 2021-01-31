@@ -30,11 +30,7 @@ from log_it.log.model import (  # noqa
     TTag,
     TTagMessage,
 )
-from log_it.utils.populate import (  # noqa
-    populate_table_from_fixture,
-    populate_link_table_from_fixture,
-    populate_from_marshmallow_fixture,
-)
+from log_it.utils.populate import populate_from_marshmallow_fixture
 from log_it.fixtures import permissions
 from log_it.extensions.marshmallow.user import ActionFixture, RoleFixture, UserWithRoles
 
