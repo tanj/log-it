@@ -21,3 +21,6 @@ class LoginView(FlaskView):
 
     def index(self):
         return render_template("auth/login.html")
+
+    def reauth(self):
+        return render_template("auth/login.html")

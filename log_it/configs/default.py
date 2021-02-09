@@ -190,8 +190,8 @@ class DefaultConfig(object):
 
     # Auth
     # ------------------------------
-    LOGIN_VIEW = "auth.login"
-    REAUTH_VIEW = "auth.reauth"
+    LOGIN_VIEW = "LoginView:index"
+    REAUTH_VIEW = "LoginView:reauth"
     LOGIN_MESSAGE_CATEGORY = "info"
     REFRESH_MESSAGE_CATEGORY = "info"
 

@@ -13,14 +13,12 @@
 from sqlalchemy_utils.models import generic_repr
 from sqlalchemy_utils.types import EmailType, URLType
 
-from flask_security import UserMixin, RoleMixin
-
 from log_it.extensions import db
 from log_it.utils.database import Timestamp, CRUDMixin
 
 
 @generic_repr
-class TUser(db.Model, CRUDMixin, UserMixin, Timestamp):
+class TUser(db.Model, CRUDMixin, Timestamp):
     __tablename__ = "tUser"
 
     ixUser = db.Column(db.Integer, primary_key=True)
@@ -28,7 +26,7 @@ class TUser(db.Model, CRUDMixin, UserMixin, Timestamp):
     sName = db.Column(db.Unicode(255))
     urlProfilePic = db.Column(URLType)
     urlDefaultLog = db.Column(URLType)
-    fs_uniquifier = db.Column(db.Text)
+    fs_uniquifier = db.Column(db.Text, unique=True)
 
     roles = db.relationship("TRole", secondary="tUserRole")
     user_permissions = db.relationship("TUserPermission")
@@ -41,7 +39,7 @@ class TUser(db.Model, CRUDMixin, UserMixin, Timestamp):
 
 
 @generic_repr
-class TRole(db.Model, CRUDMixin, RoleMixin):
+class TRole(db.Model, CRUDMixin):
     __tablename__ = "tRole"
 
     ixRole = db.Column(db.Integer, primary_key=True)

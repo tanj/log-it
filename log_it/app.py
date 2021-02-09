@@ -26,12 +26,17 @@ from flask import Flask
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
-from flask_security import Security, SQLAlchemyUserDatastore
-
 from log_it.utils.helpers import get_log_it_config
-from log_it.extensions import db, debugtoolbar, bootstrap, classful, nav
-from log_it.user.model import TUser, TRole
-
+from log_it.extensions import (
+    db,
+    debugtoolbar,
+    bootstrap,
+    classful,
+    nav,
+    login_manager,
+    principal,
+)
+from log_it.user.model import TUser
 from log_it.display import navigation  # noqa
 
 logger = logging.getLogger(__name__)
@@ -90,7 +95,7 @@ def configure_app(app, config):
     configure_logging(app)
 
     if not isinstance(config, str) and config is not None:
-        config_name = "{}.{}".format(config.__module__, config.__name__)
+        config_name = f"{config.__module__}.{config.__name__}"
     else:  # pragma: no cover
         config_name = config
 
@@ -185,9 +190,26 @@ def configure_mail_logs(app):
 
 def configure_extensions(app):
     """Configures the extensions."""
-    # Flask-Security-Too
-    user_datastore = SQLAlchemyUserDatastore(db, TUser, TRole)
-    security = Security(app, user_datastore)  # noqa F841
+    # Flask-Login
+    login_manager.login_view = app.config["LOGIN_VIEW"]
+    login_manager.refresh_view = app.config["REAUTH_VIEW"]
+    login_manager.login_message_category = app.config["LOGIN_MESSAGE_CATEGORY"]
+    login_manager.needs_refresh_message_category = app.config[
+        "REFRESH_MESSAGE_CATEGORY"
+    ]
+
+    @login_manager.user_loader
+    def load_user(fs_uniquifier):
+        """Loads the user. Required by the `login` extension."""
+        user_instance = TUser.query.filter_by(fs_uniquifier=fs_uniquifier).first()
+        if user_instance:
+            return user_instance
+        else:
+            return None
+
+    login_manager.init_app(app)
+    # Flask-Principal
+    principal.init_app(app)
     # # Flask-WTF CSRF
     # csrf.init_app(app)
 

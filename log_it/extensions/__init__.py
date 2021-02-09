@@ -16,6 +16,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_bootstrap import Bootstrap
 from flask_nav import Nav
+from flask_login import LoginManager
+from flask_principal import Principal
 
 from . import classful  # noqa
 
@@ -32,3 +34,5 @@ db = SQLAlchemy(metadata=metadata)
 debugtoolbar = DebugToolbarExtension()
 bootstrap = Bootstrap()
 nav = Nav()
+login_manager = LoginManager()
+principal = Principal()
